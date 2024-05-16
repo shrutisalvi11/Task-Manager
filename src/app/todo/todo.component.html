@@ -1,0 +1,63 @@
+
+<div class="newrow">
+    <div class="column1" style="background-color:#aaa;">
+        <mat-card class="task-card">
+            <h4 class="form-title">{{editMode==true?'Update Task':'Add Task'}}</h4>
+            <form [formGroup]="Tasks" (ngSubmit)="onSubmit()">
+                <mat-form-field appearance="outline" class="form-fields">
+                    <mat-label>Enter Task Name</mat-label>
+                    <input matInput placeholder="Task Name" formControlName="TaskName">
+                </mat-form-field>
+                <mat-form-field appearance="outline"  class="form-fields">
+                    <mat-label>Enter Task Description</mat-label>
+                    <textarea matInput placeholder="Task Description" formControlName="TaskDescription"></textarea>
+                </mat-form-field>
+                <button mat-raised-button color="primary" [disabled]="!Tasks.valid" class="form-fields">{{editMode==true?'Update Task':'Add Task'}}</button>
+            </form>
+        </mat-card>
+    </div>
+    <div class="column2" style="background-color:rgb(220, 218, 218);;">
+        <div cdkDropListGroup class="tast-container">
+            <div class="example-container">
+                <h4><span [matBadge]="TODO.length" matBadgeOverlap="false">Pending Task</span></h4>
+                <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="TODO" [cdkDropListConnectedTo]="[doneList]"
+                    class="example-list" (cdkDropListDropped)="drop($event)">
+                    <div class="example-box" *ngFor="let item of TODO;let i=index" cdkDrag>
+                        <div>
+                            <h6>{{item.TaskName}}</h6> 
+                            <p>{{item.TaskDescription}}</p>
+                        </div>
+                       <div>
+                        <button mat-mini-fab color="primary" class="edit-btn" (click)="editTask(i)">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                        <button mat-mini-fab color="warn" (click)="deleteTask(i)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                       </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="example-container">
+                <h4><span [matBadge]="DONE.length" matBadgeOverlap="false">Completed</span></h4>
+                <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="DONE" [cdkDropListConnectedTo]="[todoList]"
+                    class="example-list" (cdkDropListDropped)="drop($event)">
+                    <div class="example-box" *ngFor="let item of DONE" cdkDrag>
+                        <div>
+                            <h6>{{item.TaskName}}</h6> 
+                            <p>{{item.TaskDescription}}</p>
+                        </div>
+                        <button mat-mini-fab >
+                            <mat-icon>done_all</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
